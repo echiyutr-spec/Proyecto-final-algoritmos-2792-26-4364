@@ -28,6 +28,14 @@ do{
     cout<<"3. Cerrar caja y salir"<< endl;
     cout<<"Seleccione una opcion"<< endl;
     cin>> opcion;
+    while (cin.fail())
+    {
+        cin.clear();
+         cin.ignore(numeric_limits<streamsize>::max(),'\n');
+         cout<<"Error: debe ingresar una opcion numerica."<<endl;
+         cout<<"Ingrese nuevamente la opcion:";
+          cin>>opcion;
+        }
     switch (opcion){
         case 1:
         cout<<"Registrar venta"<< endl;
@@ -35,21 +43,19 @@ do{
         do{
         cout<<"Ingrese el precio del producto (0 para terminar):";
         cin>>precio;
-        while (cin.fail())
+       while (cin.fail() || precio<0) 
+       {
+        if (cin.fail())
         {
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout<<"Error: debe ingresar un numero."<<endl;
-            cout<<"Ingrese nuevamente el precio:";
-            cin>>precio;
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
         }
+        cout<<"Error: ingrese un precio numerico mayor o igual a 0"<<endl;
+        cout<<"Ingrese nuevamente el precio:";
+        cin>>precio;
         
-        while (precio<0)
-        {
-           cout<<"Error: el precio no puede ser negativo."<< endl;
-           cout<<"Ingrese nuevamente el precio:";
-           cin>> precio;
-        }
+       }
+       
         if (precio !=0){
         cout<<"Ingrese la cantidad del producto:";
         cin>>cantidad;
@@ -75,6 +81,11 @@ do{
         subtotal= subtotal + (precio*cantidad);
         }
         } while (precio !=0); 
+        if (subtotal==0)
+        {
+            cout<<"No se registraron productos en esta venta."<<endl;
+            break;
+        }
          cout<<"----------RECIBO DE VENTA----------"<<endl;
          cout<<"Subtotal de la venta: Q"<<subtotal<<endl;
          if (subtotal<100){
@@ -109,7 +120,7 @@ do{
          }
          cambio=pago-total;
          cout<<"Cambio del cliente: Q"<<cambio<<endl;
-         cout<<"----------GRACIAN POR SU COMPRA----------"<<endl;
+         cout<<"----------GRACIAS POR SU COMPRA----------"<<endl;
          if (subtotal>0)
          {
             numeroventas=numeroventas+1;
